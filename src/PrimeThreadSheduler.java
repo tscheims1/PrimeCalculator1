@@ -1,15 +1,24 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 public class PrimeThreadSheduler extends Thread{
 
 	private int maxThreads;
 	private PrimeThread threads[];
+	private ArrayList<String> threadNames;
+	private boolean isRunning = true;
 	PrimeThreadSheduler(int maxThreads)
 	{
+		this.threadNames = ThreadHelper.getThreadNames(maxThreads);
+		Collections.shuffle(this.threadNames );
+		
 		this.maxThreads = maxThreads;
 		threads = new PrimeThread[maxThreads];
 		for(int i = 0; i < maxThreads; i++)
 		{
-			threads[i] = new PrimeThread(i);
+
+			threads[i] = new PrimeThread(i,threadNames.get(i));
 		}
 	}
 	
@@ -19,7 +28,7 @@ public class PrimeThreadSheduler extends Thread{
 		{
 			threads[i].start();
 		}
-		for(;;)
+		for(;isRunning;)
 		{
 			this.displayThreadStates();
 			try {
@@ -37,7 +46,7 @@ public class PrimeThreadSheduler extends Thread{
 		for(int i = 0; i < maxThreads; i++)
 			
 		{
-			s += "Highest prime thread " +i+ ":" +threads[i].getHighestPrime()+"\n";
+			s += "Highest prime thread " +threads[i].getThreadName()+ ":" +threads[i].getHighestPrime()+"\n";
 		}
 		return s;
 	}
@@ -46,16 +55,18 @@ public class PrimeThreadSheduler extends Thread{
 	{
 		for(int i = 0; i < maxThreads; i++)
 		{
-			threads[i].stop();
+			
+			//threads[i].suspendThread();
+			threads[i].interrupt();
 		}
-		this.stop();
+		this.isRunning = false;
 		
 	}
 	public void displayThreadStates()
 	{
 		for(int i = 0; i < maxThreads;i++)
 		{
-			System.out.println("Thread "+i+" state: "+threads[i].getState()+" last found prime:"+threads[i].getHighestPrime());
+			System.out.println("Thread "+threads[i].getThreadName()+" state: "+threads[i].getState()+" last found prime:"+threads[i].getHighestPrime());
 		}
 		System.out.println("\n\n");
 	}

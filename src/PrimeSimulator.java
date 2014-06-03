@@ -15,6 +15,9 @@ public class PrimeSimulator {
 	}
 	public void loop()
 	{
+		
+		
+		
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Insert the highest number of the prime calculation");
 		
@@ -43,7 +46,7 @@ public class PrimeSimulator {
 				
 				for(int i = 0; i < maxNumber; i++)
 				{
-					if(isPrime(i))
+					if(MathUtils.isPrime(i))
 						primes.add((long)i);
 					
 				}
@@ -58,11 +61,5 @@ public class PrimeSimulator {
 			this.loop();
 		}
 		
-	}
-	public static boolean isPrime(long no) {
-		if (no < 2) return false;
-		for (long i = 2; i < no; i++)
-		if (no % i == 0) return false;
-		return true;
 	}
 }
